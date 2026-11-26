@@ -34,3 +34,9 @@ example/*
 
 # local scratch (文档抓取缓存等)
 .local/
+
+# 本地分析产物：官方文档抓取缓存、覆盖清单与临时脚本，不入库
+/local/
+/doc/api/tools/
+/doc/api/miniprogram-server-api-*.csv
+/doc/api/miniprogram-server-api-gap.md
