@@ -433,7 +433,7 @@ func (tcb *Tcb) DatabaseCount(env, query string) (*DatabaseCountRes, error) {
 // DatabaseAggregateRes 数据库聚合 返回结果
 type DatabaseAggregateRes struct {
 	util.CommonError
-	Data []map[string]interface{} `json:"data"` // 记录数组
+	Data []string `json:"data"` // 记录数组，每个元素是记录的 JSON 字符串
 }
 
 // AggregateDatabase 数据库聚合

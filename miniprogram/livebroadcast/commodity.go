@@ -216,12 +216,11 @@ func (s *LiveBroadcast) GetGoodsInfo(in *GetGoodsInfoRequest) (out GetGoodsInfoR
 	params := map[string]interface{}{
 		"access_token": accessToken,
 		"offset":       in.Offset,
+		// status 是必填参数，值为 0 时同样要传
+		"status": in.Status,
 	}
 	if in.Limit > 0 {
 		params["limit"] = in.Limit
-	}
-	if in.Status > 0 {
-		params["status"] = in.Status
 	}
 	query := util.Query(params)
 

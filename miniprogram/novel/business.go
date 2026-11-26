@@ -20,6 +20,7 @@
 package novel
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/silenceper/wechat/v2/util"
@@ -235,7 +236,7 @@ type BatchCreateChapterRequest struct {
 // BatchCreateChapterResponse 批量上传章节响应
 type BatchCreateChapterResponse struct {
 	util.CommonError
-	ChapterID              []string `json:"chapter_id"`                // 章节 id 列表
+	ChapterID              []string `json:"chapter_id_list"`           // 章节 id 列表
 	ConflictOriginalIDList []string `json:"conflict_original_id_list"` // 冲突的提供方章节主键列表
 }
 
@@ -389,7 +390,34 @@ type GetBookRequest struct {
 // GetBookResponse 获取作品信息响应
 type GetBookResponse struct {
 	util.CommonError
-	Book []BookInfo `json:"book"` // 作品信息
+	Book *BookInfo `json:"book"` // 作品信息
+}
+
+// UnmarshalJSON 官方文档中 book 字段的参数表标注为数组、返回示例却是对象，
+// 这里两种形态都接受，避免与线上返回不符时整个响应解码失败。
+func (r *GetBookResponse) UnmarshalJSON(data []byte) error {
+	type alias GetBookResponse
+	aux := &struct {
+		Book json.RawMessage `json:"book"`
+		*alias
+	}{alias: (*alias)(r)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	if len(aux.Book) == 0 || string(aux.Book) == "null" {
+		return nil
+	}
+	if aux.Book[0] == '[' {
+		var list []BookInfo
+		if err := json.Unmarshal(aux.Book, &list); err != nil {
+			return err
+		}
+		if len(list) > 0 {
+			r.Book = &list[0]
+		}
+		return nil
+	}
+	return json.Unmarshal(aux.Book, &r.Book)
 }
 
 // GetBook 获取作品信息

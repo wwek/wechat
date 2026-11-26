@@ -21,6 +21,7 @@ package livebroadcast
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/silenceper/wechat/v2/util"
 )
@@ -728,6 +729,7 @@ func (s *LiveBroadcast) SortGoods(in *SortGoodsRequest) (out SortGoodsResponse, 
 // UpdateCommentRequest 禁言管理请求
 type UpdateCommentRequest struct {
 	ID         int64 `json:"id"`         // 房间ID
+	RoomID     int64 `json:"roomId"`     // 房间ID（官方参数表写 id、请求示例写 roomId，两个都传）
 	BanComment int64 `json:"banComment"` // 1-禁言，0-取消禁言
 }
 
@@ -742,6 +744,13 @@ func (s *LiveBroadcast) UpdateComment(in *UpdateCommentRequest) (out UpdateComme
 	accessToken, err := s.GetAccessToken()
 	if err != nil {
 		return
+	}
+	// 官方参数表写 id、请求示例写 roomId，两个字段都带上
+	if in.RoomID == 0 {
+		in.RoomID = in.ID
+	}
+	if in.ID == 0 {
+		in.ID = in.RoomID
 	}
 	uri := fmt.Sprintf(updateCommentURL, accessToken)
 	response, err := util.PostJSON(uri, in)
@@ -854,7 +863,7 @@ func (s *LiveBroadcast) GetSharedCode(in *GetSharedCodeRequest) (out GetSharedCo
 		"roomId":       in.RoomID,
 	}
 	if in.Params != "" {
-		params["params"] = in.Params
+		params["params"] = url.QueryEscape(in.Params)
 	}
 	query := util.Query(params)
 

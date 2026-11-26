@@ -21,6 +21,7 @@ package livebroadcast
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/silenceper/wechat/v2/util"
 )
@@ -75,7 +76,7 @@ func (s *LiveBroadcast) GetRoleList(in *GetRoleListRequest) (out GetRoleListResp
 		params["limit"] = in.Limit
 	}
 	if in.Keyword != "" {
-		params["keyword"] = in.Keyword
+		params["keyword"] = url.QueryEscape(in.Keyword)
 	}
 	query := util.Query(params)
 

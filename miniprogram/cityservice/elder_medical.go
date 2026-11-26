@@ -20,6 +20,7 @@
 package cityservice
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/silenceper/wechat/v2/util"
@@ -83,8 +84,7 @@ type GetHospNoticeListRequest struct {
 // GetHospNoticeListResponse 查询所有公告响应
 type GetHospNoticeListResponse struct {
 	util.CommonError
-	NoticeList    []HospNotice `json:"notice_list"`    // 公告列表
-	PreviewOpenID []string     `json:"preview_openid"` // 可以预览草稿的用户 openid
+	NoticeList []HospNotice `json:"notice_list"` // 公告列表
 }
 
 // GetHospNoticeList 查询所有公告
@@ -108,9 +108,10 @@ func (s *CityService) GetHospNoticeList(in *GetHospNoticeListRequest) (out GetHo
 
 // HospNotice 公告
 type HospNotice struct {
-	NoticeID int64  `json:"notice_id"` // 公告ID
-	Content  string `json:"content"`   // 公告内容
-	Status   string `json:"status"`    // 公告状态
+	NoticeID      int64    `json:"notice_id"`      // 公告ID
+	Content       string   `json:"content"`        // 公告内容
+	Status        string   `json:"status"`         // 公告状态
+	PreviewOpenID []string `json:"preview_openid"` // 可以预览草稿的用户 openid
 }
 
 // GetMedRealNameRequest 查询用户实名API请求
@@ -158,7 +159,28 @@ type GetMsgRelationRequest struct {
 // GetMsgRelationResponse 查询用户是否开通响应
 type GetMsgRelationResponse struct {
 	util.CommonError
-	IsSubscribed bool `json:"is_subscribed"` // 是否订阅
+	IsSubscribed util.FlexBool `json:"is_subscribed"` // 是否订阅（官方参数表为 boolean、返回示例为数字）
+}
+
+// UnmarshalJSON 该接口返回的错误码字段是 err_code/err_msg（与通用的 errcode/errmsg 不同），
+// 这里做一次转换，保证 util.DecodeWithError 能正确识别错误。
+func (r *GetMsgRelationResponse) UnmarshalJSON(data []byte) error {
+	type alias GetMsgRelationResponse
+	aux := &struct {
+		ErrCode *int64  `json:"err_code"`
+		ErrMsg  *string `json:"err_msg"`
+		*alias
+	}{alias: (*alias)(r)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	if aux.ErrCode != nil {
+		r.ErrCode = *aux.ErrCode
+	}
+	if aux.ErrMsg != nil {
+		r.ErrMsg = *aux.ErrMsg
+	}
+	return nil
 }
 
 // GetMsgRelation 查询用户是否开通

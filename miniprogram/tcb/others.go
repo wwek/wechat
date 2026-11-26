@@ -119,8 +119,8 @@ type GetOpenDataRequest struct {
 
 // OpenData 开放数据
 type OpenData struct {
-	CloudID string `json:"cloud_id"` // cloud id
-	JSON    string `json:"json"`     // 数据详情
+	CloudID string                 `json:"cloud_id"` // cloud id
+	JSON    map[string]interface{} `json:"json"`     // 数据详情
 }
 
 // GetOpenDataResponse 获取cloudID对应的数据 返回结果

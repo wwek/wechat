@@ -321,10 +321,10 @@ type GetPubTemplateTitleListResponse struct {
 
 // PubTemplateTitle 模板标题
 type PubTemplateTitle struct {
-	Type       int64  `json:"type"`
-	TID        string `json:"tid"`
-	Title      string `json:"title"`
-	CategoryID string `json:"categoryId"`
+	Type       int64           `json:"type"`
+	TID        util.FlexString `json:"tid"` // 模板标题ID（官方返回示例中为数字）
+	Title      string          `json:"title"`
+	CategoryID string          `json:"categoryId"`
 }
 
 // GetPubTemplateTitleList 获取所属类目下的公共模板

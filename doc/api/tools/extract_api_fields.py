@@ -83,22 +83,52 @@ def parse_page(path):
     req_block = section(raw, "请求参数")
     resp_block = section(raw, "返回参数")
 
+    # 官方表格有多种列布局：参数名|类型|必填|说明、参数名|类型|必填|示例|说明、
+    # 参数名|类型|示例|说明 等，必须按表头名定位列，写死下标会把「说明」列丢掉、
+    # 把「示例」当成说明。
+    COLUMN_ALIASES = {
+        "name": ("参数名", "字段名", "参数"),
+        "type": ("类型",),
+        "required": ("必填",),
+        "example": ("示例",),
+        "desc": ("说明", "描述"),
+    }
+
+    def col_index(header):
+        idx = {}
+        for i, h in enumerate(header):
+            h = h.strip()
+            for key, aliases in COLUMN_ALIASES.items():
+                if h in aliases and key not in idx:
+                    idx[key] = i
+        return idx
+
+    def cell(cells, idx, key, fallback):
+        if key in idx and len(cells) > idx[key]:
+            return cells[idx[key]]
+        return fallback
+
     def norm(tables, with_required):
         items = []
         for group, header, body in tables:
+            idx = col_index(header)
             for cells in body:
-                name = cells[0] if cells else ""
-                typ = cells[1] if len(cells) > 1 else ""
+                name = cell(cells, idx, "name", cells[0] if cells else "")
+                typ = cell(cells, idx, "type", cells[1] if len(cells) > 1 else "")
                 if with_required:
-                    req = cells[2] if len(cells) > 2 else ""
-                    desc = cells[3] if len(cells) > 3 else ""
+                    req = cell(cells, idx, "required", cells[2] if len(cells) > 2 else "")
                 else:
                     req = ""
-                    desc = cells[2] if len(cells) > 2 else ""
+                example = cell(cells, idx, "example", "")
+                desc = cell(cells, idx, "desc", "")
+                if not desc and example:
+                    desc = example
+                if not desc:
+                    desc = cells[3] if (with_required and len(cells) > 3) else (cells[2] if len(cells) > 2 else "")
                 if name in ("参数名", "字段名", "参数"):
                     continue
                 items.append({"group": group, "name": name, "type": typ,
-                              "required": req, "desc": desc})
+                              "required": req, "example": example, "desc": desc})
         return items
 
     return {

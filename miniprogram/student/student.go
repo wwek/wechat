@@ -44,8 +44,8 @@ type QuickCheckStudentIdentityRequest struct {
 // QuickCheckStudentIdentityResponse 快速获取学生身份返回参数
 type QuickCheckStudentIdentityResponse struct {
 	util.CommonError
-	BindStatus BindStatus `json:"bind_status"` // 绑定状态：1-未绑定，2-审核中，3-已绑定
-	IsStudent  bool       `json:"is_student"`  // 用户学生身份绑定状态说明，true-是学生，false-不是学生
+	BindStatus BindStatus    `json:"bind_status"` // 绑定状态：1-未绑定，2-审核中，3-已绑定
+	IsStudent  util.FlexBool `json:"is_student"`  // 用户学生身份绑定状态说明，true-是学生，false-不是学生（官方返回示例中为字符串）
 }
 
 // QuickCheckStudentIdentity 快速获取学生身份

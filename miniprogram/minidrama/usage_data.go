@@ -59,12 +59,12 @@ type ListPackagesResponse struct {
 
 // TrafficPackage 流量包
 type TrafficPackage struct {
-	StartTime int64  `json:"start_time"` // 有效期起始时间
-	EndTime   int64  `json:"end_time"`   // 有效期截止时间
-	Used      int64  `json:"used"`       // 流量包已消耗流量的数值（MB）
-	All       int64  `json:"all"`        // 流量包总额（MB），剩余流量=流量包总额-已消耗流量
-	OrderID   string `json:"order_id"`   // 订单号
-	Status    int    `json:"status"`     // 流量包状态，参考请求参数status中的说明
-	IsDeleted int    `json:"is_deleted"` // 是否已删除（失效），例如已退款
-	PackageID string `json:"package_id"` // 流量包编号
+	StartTime int64           `json:"start_time"` // 有效期起始时间
+	EndTime   int64           `json:"end_time"`   // 有效期截止时间
+	Used      int64           `json:"used"`       // 流量包已消耗流量的数值（MB）
+	All       int64           `json:"all"`        // 流量包总额（MB），剩余流量=流量包总额-已消耗流量
+	OrderID   util.FlexString `json:"order_id"`   // 订单号（官方参数表为 string、返回示例为数字）
+	Status    int             `json:"status"`     // 流量包状态，参考请求参数status中的说明
+	IsDeleted int             `json:"is_deleted"` // 是否已删除（失效），例如已退款
+	PackageID string          `json:"package_id"` // 流量包编号
 }

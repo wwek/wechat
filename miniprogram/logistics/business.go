@@ -253,6 +253,7 @@ type GetPathRequest struct {
 	OpenID     string `json:"openid"`      // 用户openid，当add_source=2时无需填写（不发送物流服务通知）
 	DeliveryID string `json:"delivery_id"` // 快递公司ID，参见 GetAllDelivery
 	WaybillID  string `json:"waybill_id"`  // 运单ID
+	OrderID    string `json:"order_id"`    // 订单号
 }
 
 // PathItem 运单轨迹节点
@@ -403,9 +404,9 @@ func (s *Logistics) GetAllAccount() (out GetAllAccountResponse, err error) {
 // GetPrinterResponse 获取打印员返回参数
 type GetPrinterResponse struct {
 	util.CommonError
-	Count     int64    `json:"count"`      // 打印员数量
-	OpenID    []string `json:"openid"`     // 打印员openid
-	TagIDList []int64  `json:"tagid_list"` // tagid列表
+	Count     int64             `json:"count"`      // 打印员数量
+	OpenID    []string          `json:"openid"`     // 打印员openid
+	TagIDList []util.FlexString `json:"tagid_list"` // tagid列表（官方返回示例中为字符串）
 }
 
 // GetPrinter 获取打印员

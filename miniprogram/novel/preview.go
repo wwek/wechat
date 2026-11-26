@@ -34,10 +34,7 @@ const (
 
 // SetPreviewSettingRequest 预览设置修改请求
 type SetPreviewSettingRequest struct {
-	BookID       string `json:"book_id"`       // 作品 id
-	DefaultWords int64  `json:"default_words"` // 默认预览字数
-	ChapterIndex int64  `json:"chapter_index"` // 章节索引，从 0 开始，未设置的章节将使用 default_words 作为预览字数
-	Words        int64  `json:"words"`         // 章节字数
+	Setting *PreviewSetting `json:"setting"` // 预览设置
 }
 
 // SetPreviewSettingResponse 预览设置修改响应

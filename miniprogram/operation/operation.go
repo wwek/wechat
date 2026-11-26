@@ -2,6 +2,7 @@ package operation
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/silenceper/wechat/v2/miniprogram/context"
 	"github.com/silenceper/wechat/v2/util"
@@ -474,7 +475,7 @@ func (o *Operation) GetFeedbackMedia(req *GetFeedbackMediaRequest) ([]byte, erro
 	params := map[string]interface{}{
 		"access_token": accessToken,
 		"record_id":    req.RecordID,
-		"media_id":     req.MediaID,
+		"media_id":     url.QueryEscape(req.MediaID),
 	}
 	query := util.Query(params)
 

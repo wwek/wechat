@@ -329,6 +329,7 @@ type InsuranceFreightOrder struct {
 	PayFailReason    string `json:"pay_fail_reason"`    // 理赔打款失败原因
 	PayFinishTime    int64  `json:"pay_finish_time"`    // 理赔款打给用户的时间
 	IsHomePickUp     int    `json:"is_home_pick_up"`    // 是否上门取件
+	InsuranceEndDate string `json:"insurance_end_date"` // 保险止期，格式: yyyy-mm-dd hh24:mi:ss
 }
 
 // InsuranceFreightGetPayOrderListRequest 拉取充值订单信息请求参数
@@ -347,15 +348,15 @@ type InsuranceFreightGetPayOrderListResponse struct {
 
 // InsuranceFreightPayOrder 充值订单信息
 type InsuranceFreightPayOrder struct {
-	OrderID      int64 `json:"order_id"`      // 充值单号
-	OrderStatus  int   `json:"order_status"`  // 订单状态
-	TotalPrice   int64 `json:"total_price"`   // 充值金额
-	CreateTime   int64 `json:"create_time"`   // 订单创建时间
-	PayTime      int64 `json:"pay_time"`      // 支付时间
-	CanRefund    int   `json:"can_refund"`    // 是否可以退款
-	RefundTime   int64 `json:"refund_time"`   // 退款时间
-	RefundStatus int   `json:"refund_status"` // 退款状态
-	RefundAmt    int64 `json:"refund_amt"`    // 退款金额
+	OrderID      int64         `json:"order_id"`      // 充值单号
+	OrderStatus  int           `json:"order_status"`  // 订单状态
+	TotalPrice   int64         `json:"total_price"`   // 充值金额
+	CreateTime   int64         `json:"create_time"`   // 订单创建时间
+	PayTime      int64         `json:"pay_time"`      // 支付时间
+	CanRefund    util.FlexBool `json:"can_refund"`    // 是否可以退款（官方参数表为 number、返回示例为布尔值）
+	RefundTime   int64         `json:"refund_time"`   // 退款时间
+	RefundStatus int           `json:"refund_status"` // 退款状态
+	RefundAmt    int64         `json:"refund_amt"`    // 退款金额
 }
 
 // InsuranceFreightGetSummaryRequest 拉取理赔摘要请求参数

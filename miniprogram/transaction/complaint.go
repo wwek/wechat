@@ -20,7 +20,9 @@
 package transaction
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 
 	"github.com/silenceper/wechat/v2/util"
 )
@@ -178,6 +180,33 @@ type GetOrderDetailResponse struct {
 	ReturnBill     ReturnBill     `json:"returnBill"`     // 退货单信息
 }
 
+// UnmarshalJSON 官方文档中 item 字段的参数表标注为对象、返回示例却是数组，
+// 这里两种形态都接受，避免与线上返回不符时整个响应解码失败。
+func (r *GetOrderDetailResponse) UnmarshalJSON(data []byte) error {
+	type alias GetOrderDetailResponse
+	aux := &struct {
+		Item json.RawMessage `json:"item"`
+		*alias
+	}{alias: (*alias)(r)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	if len(aux.Item) == 0 || string(aux.Item) == "null" {
+		return nil
+	}
+	if aux.Item[0] == '[' {
+		var list []ComplaintItem
+		if err := json.Unmarshal(aux.Item, &list); err != nil {
+			return err
+		}
+		if len(list) > 0 {
+			r.Item = list[0]
+		}
+		return nil
+	}
+	return json.Unmarshal(aux.Item, &r.Item)
+}
+
 // GetOrderDetail 查询投诉单详情
 // see https://developers.weixin.qq.com/miniprogram/dev/server/API/transaction-guarantee/complaint/api_getorderdetail
 func (s *Transaction) GetOrderDetail(in *GetOrderDetailRequest) (out GetOrderDetailResponse, err error) {
@@ -188,7 +217,7 @@ func (s *Transaction) GetOrderDetail(in *GetOrderDetailRequest) (out GetOrderDet
 
 	params := map[string]interface{}{
 		"access_token":     accessToken,
-		"complaintOrderId": in.ComplaintOrderID,
+		"complaintOrderId": url.QueryEscape(in.ComplaintOrderID),
 	}
 
 	response, err := util.HTTPGet(fmt.Sprintf(getOrderDetailURL, util.Query(params)))
@@ -214,7 +243,7 @@ type ComplaintOrder struct {
 	OutTradeNo       string            `json:"outTradeNo"`       // 外部交易单号
 	ProductName      string            `json:"productName"`      // 商品名称
 	PayTime          int64             `json:"payTime"`          // 支付时间
-	TotalCost        string            `json:"totalCost"`        // 订单总金额
+	TotalCost        util.FlexString   `json:"totalCost"`        // 订单总金额（官方参数表为 string、返回示例为数字）
 	ExpireTime       int64             `json:"expireTime"`       // 投诉过期时间
 	HeadImgURL       string            `json:"headImgUrl"`       // 投诉用户头像
 	NickName         string            `json:"nickName"`         // 投诉用户昵称

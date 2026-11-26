@@ -35,9 +35,9 @@ const (
 // GetGuaranteeStatusResponse 获取交易保障标状态响应
 type GetGuaranteeStatusResponse struct {
 	util.CommonError
-	IsActived bool     `json:"isActived"` // 是否激活交易保障标
-	Msg       string   `json:"msg"`       // 保障标状态相关信息
-	Reasons   []string `json:"reasons"`   // 未能开通保障标的原因
+	IsActived util.FlexBool `json:"isActived"` // 是否激活交易保障标（官方返回示例中为字符串）
+	Msg       string        `json:"msg"`       // 保障标状态相关信息
+	Reasons   []string      `json:"reasons"`   // 未能开通保障标的原因
 }
 
 // GetGuaranteeStatus 获取交易保障标状态
@@ -102,12 +102,12 @@ func (s *Transaction) GetPenaltyList(in *GetPenaltyListRequest) (out GetPenaltyL
 
 // PenaltyItem 扣分记录
 type PenaltyItem struct {
-	IllegalOrderID   int64  `json:"illegalOrderId"`   // 扣分记录ID
-	ComplaintOrderID int64  `json:"complaintOrderId"` // 投诉单ID
-	IllegalWording   string `json:"illegalWording"`   // 违规行为
-	Status           int64  `json:"status"`           // 扣分记录状态
-	MinusScore       int64  `json:"minusScore"`       // 扣除分数
-	OrderID          int64  `json:"orderId"`          // 订单号
-	IllegalTime      int64  `json:"illegalTime"`      // 扣分记录创建时间
-	UpdateTime       int64  `json:"updateTime"`       // 更新时间
+	IllegalOrderID   util.FlexString `json:"illegalOrderId"`   // 扣分记录ID（官方返回示例中为字符串）
+	ComplaintOrderID util.FlexString `json:"complaintOrderId"` // 投诉单ID（官方返回示例中为字符串）
+	IllegalWording   string          `json:"illegalWording"`   // 违规行为
+	Status           int64           `json:"status"`           // 扣分记录状态
+	MinusScore       int64           `json:"minusScore"`       // 扣除分数
+	OrderID          util.FlexString `json:"orderId"`          // 订单号（官方返回示例中为字符串，如 payorder@xxx）
+	IllegalTime      int64           `json:"illegalTime"`      // 扣分记录创建时间
+	UpdateTime       int64           `json:"updateTime"`       // 更新时间
 }

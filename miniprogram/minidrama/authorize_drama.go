@@ -45,8 +45,11 @@ func (s *MiniDrama) AuthorizeDrama(ctx context.Context, in *AuthorizeDramaReques
 		dramaIDs = append(dramaIDs, strconv.FormatInt(dramaID, 10))
 	}
 	params := map[string]interface{}{
-		"drama_id":   strings.Join(dramaIDs, ","),
-		"authorized": in.Authorized,
+		"drama_id": strings.Join(dramaIDs, ","),
+		// 官方参数表写 authorized、请求示例写 authorized_appid（同族接口两个来源都是
+		// authorized_appid），两个字段都带上
+		"authorized":       in.Authorized,
+		"authorized_appid": in.Authorized,
 	}
 	if in.AuthzExpireTime != 0 {
 		params["authz_expire_time"] = in.AuthzExpireTime

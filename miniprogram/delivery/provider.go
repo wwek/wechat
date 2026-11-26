@@ -32,9 +32,11 @@ const (
 
 // LocalAgent 骑手信息
 type LocalAgent struct {
-	Name             string `json:"name"`               // 骑手姓名
-	Phone            string `json:"phone"`              // 骑手电话
-	IsPhoneEncrypted int64  `json:"is_phone_encrypted"` // 电话是否加密。默认是0不加密，1表示加密
+	Name             string  `json:"name"`               // 骑手姓名
+	Phone            string  `json:"phone"`              // 骑手电话
+	IsPhoneEncrypted int64   `json:"is_phone_encrypted"` // 电话是否加密。默认是0不加密，1表示加密
+	Lng              float64 `json:"lng"`                // 骑手经度
+	Lat              float64 `json:"lat"`                // 骑手纬度
 }
 
 // UpdateOrderRequest 更新配送单状态请求参数

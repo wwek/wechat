@@ -20,6 +20,7 @@
 package delivery
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/silenceper/wechat/v2/util"
@@ -352,6 +353,7 @@ func (s *Delivery) RealMockUpdateOrder(in *RealMockUpdateOrderRequest) (out Real
 type MockUpdateOrderRequest struct {
 	ShopID      string `json:"shopid"`        // 商家id, 必须是 "test_shop_id"
 	ShopOrderID string `json:"shop_order_id"` // 唯一标识订单的 ID，由商户生成
+	WaybillID   string `json:"waybill_id"`    // 运单号
 	OrderStatus int64  `json:"order_status"`  // 配送状态
 	ActionTime  int64  `json:"action_time"`   // 状态变更时间点，Unix秒级时间戳
 	ActionMsg   string `json:"action_msg"`    // 附加信息
@@ -606,10 +608,27 @@ type PreAddOrderResponse struct {
 	DeliverFee       float64 `json:"deliverfee"`        // 运费(单位：元)
 	CouponFee        float64 `json:"couponFee"`         // 优惠券费用(单位：元)
 	Tips             float64 `json:"tips"`              // 小费(单位：元)
-	InsuranceFee     float64 `json:"insurancefee"`      // 保价费(单位：元)
+	InsuranceFee     float64 `json:"insurancfee"`       // 保价费(单位：元)
 	Distance         int64   `json:"distance"`          // 配送距离(单位：米)
 	DeliveryToken    string  `json:"delivery_token"`    // 配送公司返回的token，用户下单时带上这个字段，保证在一段时间内运费不变
 	DispatchDuration int64   `json:"dispatch_duration"` // 预计骑手接单时间，单位秒，比如5分钟就填300, 无法预计填0
+}
+
+// UnmarshalJSON 官方文档中保价费字段名存在两种写法（参数表写 insurancefee、返回示例写
+// insurancfee），这里两种都接受，避免取不到保价费。
+func (r *PreAddOrderResponse) UnmarshalJSON(data []byte) error {
+	type alias PreAddOrderResponse
+	aux := &struct {
+		InsuranceFee *float64 `json:"insurancefee"`
+		*alias
+	}{alias: (*alias)(r)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	if aux.InsuranceFee != nil {
+		r.InsuranceFee = *aux.InsuranceFee
+	}
+	return nil
 }
 
 // PreAddOrder 预下配送单

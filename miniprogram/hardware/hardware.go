@@ -62,6 +62,7 @@ func NewHardware(ctx *context.Context) *Hardware {
 type DeviceListItem struct {
 	ModelID string `json:"model_id"` // 设备型号 id。通过微信公众平台注册设备获得。
 	SN      string `json:"sn"`       // 设备唯一序列号。由厂商分配。
+	ErrCode int64  `json:"errcode"`  // 该设备的错误码，0 表示成功
 }
 
 // DeviceExpireItem 设备激活详情列表项，包含设备型号、设备序列号与过期时间
@@ -69,6 +70,7 @@ type DeviceExpireItem struct {
 	ModelID    string `json:"model_id"`    // 设备型号唯一标识
 	SN         string `json:"sn"`          // 设备的唯一标识
 	ExpireTime int64  `json:"expire_time"` // 设备的过期时间
+	ErrCode    int64  `json:"errcode"`     // 该设备的错误码，0 表示成功
 }
 
 // ActiveLicenseDeviceItem 激活 license 的设备列表项

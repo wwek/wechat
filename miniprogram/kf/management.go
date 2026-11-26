@@ -47,7 +47,7 @@ type RegisterBusinessRequest struct {
 // RegisterBusinessResponse 客服子商户创建商户响应
 type RegisterBusinessResponse struct {
 	util.CommonError
-	BusinessID string `json:"business_id"` // 商户ID
+	BusinessID util.FlexString `json:"business_id"` // 商户ID（官方参数表为 string、返回示例为数字）
 }
 
 // RegisterBusiness 客服子商户创建商户
@@ -81,10 +81,10 @@ type GetBusinessResponse struct {
 
 // BusinessInfo 商户信息
 type BusinessInfo struct {
-	BusinessID  string `json:"business_id"`   // 商户ID
-	AccountName string `json:"account_name"`  // 商户账号名称
-	Nickname    string `json:"nickname"`      // 商户昵称，会在客户端会话里展示
-	IconMediaID string `json:"icon_media_id"` // 商户头像
+	BusinessID  util.FlexString `json:"business_id"`   // 商户ID（官方参数表为 string、返回示例为数字）
+	AccountName string          `json:"account_name"`  // 商户账号名称
+	Nickname    string          `json:"nickname"`      // 商户昵称，会在客户端会话里展示
+	IconMediaID string          `json:"icon_media_id"` // 商户头像
 }
 
 // GetBusiness 客服子商户拉取单个商户信息

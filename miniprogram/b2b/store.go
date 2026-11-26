@@ -117,9 +117,8 @@ type RetailStaff struct {
 	CreateTime int64  `json:"create_time"` // 员工加入时间，管理员无该字段
 }
 
-// GetRetailInfoResponse 门店信息查询响应
-type GetRetailInfoResponse struct {
-	util.CommonError
+// RetailInfo 门店信息
+type RetailInfo struct {
 	MobilePhone       string        `json:"mobile_phone"`        // 手机号
 	RetailType        string        `json:"retail_type"`         // 一级门店类型
 	SubRetailType     string        `json:"sub_retail_type"`     // 二级门店类型
@@ -138,6 +137,12 @@ type GetRetailInfoResponse struct {
 	BusinessType      []string      `json:"business_type"`       // 一级主营商品
 	OtherBusinessType string        `json:"other_business_type"` // 二级主营商品
 	StaffList         []RetailStaff `json:"staff_list"`          // 员工列表，包含管理员
+}
+
+// GetRetailInfoResponse 门店信息查询响应
+type GetRetailInfoResponse struct {
+	util.CommonError
+	Info []RetailInfo `json:"info"` // 门店信息列表
 }
 
 // GetRetailInfo 门店信息查询

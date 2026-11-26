@@ -240,7 +240,8 @@ type BookAuthAppIDResult struct {
 // QueryBookAuthV2Response 查看账号主授权关系列表响应
 type QueryBookAuthV2Response struct {
 	util.CommonError
-	AppIDResults []BookAuthAppIDResult `json:"appid_results"` // 被授权方列表，按授权过期时间从早到晚排序
+	AppIDResults []BookAuthAppIDResult `json:"appid_results"` // 被授权方列表，按授权过期时间从早到晚排序；type=1 且不传 grantor_appid/book_ids 时返回
+	BookResults  []BookAuthAppIDResult `json:"book_results"`  // 作品授权列表，type=1 且传了 grantor_appid 或 book_ids 时返回
 	NextCursor   string                `json:"next_cursor"`   // 下一页游标，请求时填入 cursor 参数
 }
 

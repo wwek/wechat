@@ -224,6 +224,8 @@ type RetailRegisterMchRequest struct {
 	BusinessAdditionDesc string           `json:"business_addition_desc"` // 补充说明
 	BusinessAdditionPics string           `json:"business_addition_pics"` // 补充材料，图片 id 通过上传商户图片接口获取
 	OpenType             int64            `json:"open_type"`              // 开通支付方式，只开通微信支付-0，同时开通微信支付和银行转账-1
+	IgnoreSameEntity     bool             `json:"ignore_same_entity"`     // 是否忽略同一实体重复进件
+	LaunchPollTask       bool             `json:"launch_poll_task"`       // 是否发起轮询任务，进件结果通过消息推送通知
 	ExtRegisterInfo      *ExtRegisterInfo `json:"ext_register_info"`      // 补充信息
 	ClientIP             string           `json:"client_ip"`              // 商户 ip 地址，支持 IPv4 和 IPv6
 }
@@ -432,6 +434,8 @@ type UpdateWqfChargeFeeResponse struct {
 	MerchantName                  string `json:"merchant_name"`                    // 商户名称
 	CertifiedChargeFeeNumerator   int64  `json:"certified_charge_fee_numerator"`   // 认证费率分子，分母统一为 10000
 	UncertifiedChargeFeeNumerator int64  `json:"uncertified_charge_fee_numerator"` // 未认证的费率分子，分母统一为 10000
+	EffectTime                    string `json:"effect_time"`                      // 费率生效时间
+	ExpireTime                    string `json:"expire_time"`                      // 费率失效时间
 }
 
 // UpdateWqfChargeFee 报名银行转账技术服务费优惠活动
@@ -923,6 +927,8 @@ type GetWqfChargeFeeResponse struct {
 	MerchantName                  string `json:"merchant_name"`                    // 商户名称
 	CertifiedChargeFeeNumerator   int64  `json:"certified_charge_fee_numerator"`   // 认证费率分子，分母统一为 10000
 	UncertifiedChargeFeeNumerator int64  `json:"uncertified_charge_fee_numerator"` // 未认证的费率分子，分母统一为 10000
+	EffectTime                    string `json:"effect_time"`                      // 费率生效时间
+	ExpireTime                    string `json:"expire_time"`                      // 费率失效时间
 }
 
 // GetWqfChargeFee 查询银行转账的技术服务费率

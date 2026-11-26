@@ -45,11 +45,11 @@ func NewServiceMarket(ctx *context.Context) *ServiceMarket {
 
 // InvokeServiceRequest 调用服务市场接口请求
 type InvokeServiceRequest struct {
-	Service     string `json:"service"`       // 服务 ID，在每个接口详情页面中均可以找到服务id
-	API         string `json:"api"`           // 接口名；在每个接口详情页面中均可以找到api name
-	Data        string `json:"data"`          // 服务提供方接口定义的 JSON 格式的数据，请看每个服务的接口文档详情
-	ClientMsgID string `json:"client_msg_id"` // 随机字符串 ID，调用方请求的唯一标识
-	Async       bool   `json:"async"`         // 是否是异步API，当是异步调用时，必须填true
+	Service     string      `json:"service"`       // 服务 ID，在每个接口详情页面中均可以找到服务id
+	API         string      `json:"api"`           // 接口名；在每个接口详情页面中均可以找到api name
+	Data        interface{} `json:"data"`          // 服务提供方接口定义的 JSON 格式的数据，请看每个服务的接口文档详情（官方请求示例中为对象）
+	ClientMsgID string      `json:"client_msg_id"` // 随机字符串 ID，调用方请求的唯一标识
+	Async       bool        `json:"async"`         // 是否是异步API，当是异步调用时，必须填true
 }
 
 // InvokeServiceResponse 调用服务市场接口响应
