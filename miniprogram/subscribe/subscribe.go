@@ -321,10 +321,27 @@ type GetPubTemplateTitleListResponse struct {
 
 // PubTemplateTitle 模板标题
 type PubTemplateTitle struct {
-	Type       int64           `json:"type"`
-	TID        util.FlexString `json:"tid"` // 模板标题ID（官方返回示例中为数字）
-	Title      string          `json:"title"`
-	CategoryID string          `json:"categoryId"`
+	Type       int64  `json:"type"`
+	TID        string `json:"tid"`
+	Title      string `json:"title"`
+	CategoryID string `json:"categoryId"`
+}
+
+// UnmarshalJSON tid 官方返回示例中是数字，这里兼容数字与字符串两种形态，
+// 对外暴露的字段类型保持 string 不变。
+func (t *PubTemplateTitle) UnmarshalJSON(data []byte) error {
+	type alias PubTemplateTitle
+	aux := &struct {
+		TID *util.FlexString `json:"tid"`
+		*alias
+	}{alias: (*alias)(t)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	if aux.TID != nil {
+		t.TID = string(*aux.TID)
+	}
+	return nil
 }
 
 // GetPubTemplateTitleList 获取所属类目下的公共模板

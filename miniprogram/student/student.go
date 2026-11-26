@@ -2,6 +2,7 @@ package student
 
 import (
 	context2 "context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/silenceper/wechat/v2/miniprogram/context"
@@ -44,8 +45,25 @@ type QuickCheckStudentIdentityRequest struct {
 // QuickCheckStudentIdentityResponse 快速获取学生身份返回参数
 type QuickCheckStudentIdentityResponse struct {
 	util.CommonError
-	BindStatus BindStatus    `json:"bind_status"` // 绑定状态：1-未绑定，2-审核中，3-已绑定
-	IsStudent  util.FlexBool `json:"is_student"`  // 用户学生身份绑定状态说明，true-是学生，false-不是学生（官方返回示例中为字符串）
+	BindStatus BindStatus `json:"bind_status"` // 绑定状态：1-未绑定，2-审核中，3-已绑定
+	IsStudent  bool       `json:"is_student"`  // 用户学生身份绑定状态说明，true-是学生，false-不是学生
+}
+
+// UnmarshalJSON is_student 官方返回示例中是字符串，这里兼容字符串与布尔两种形态，
+// 对外暴露的字段类型保持 bool 不变。
+func (r *QuickCheckStudentIdentityResponse) UnmarshalJSON(data []byte) error {
+	type alias QuickCheckStudentIdentityResponse
+	aux := &struct {
+		IsStudent *util.FlexBool `json:"is_student"`
+		*alias
+	}{alias: (*alias)(r)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	if aux.IsStudent != nil {
+		r.IsStudent = bool(*aux.IsStudent)
+	}
+	return nil
 }
 
 // QuickCheckStudentIdentity 快速获取学生身份
