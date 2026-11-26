@@ -327,31 +327,46 @@ type PubTemplateTitle struct {
 	CategoryID string `json:"categoryId"`
 }
 
-// UnmarshalJSON tid 官方返回示例中是数字，这里兼容数字与字符串两种形态，
+// UnmarshalJSON tid 与 categoryId 在官方文档的参数表与返回示例中类型不一致
+// （示例里 tid 是数字、categoryId 是字符串），这里两种形态都兼容，
 // 对外暴露的字段类型保持 string 不变。
 func (t *PubTemplateTitle) UnmarshalJSON(data []byte) error {
-	type alias PubTemplateTitle
+	type pubTemplateTitle PubTemplateTitle
 	aux := &struct {
-		TID json.RawMessage `json:"tid"`
-		*alias
-	}{alias: (*alias)(t)}
+		TID        json.RawMessage `json:"tid"`
+		CategoryID json.RawMessage `json:"categoryId"`
+		*pubTemplateTitle
+	}{pubTemplateTitle: (*pubTemplateTitle)(t)}
 	if err := json.Unmarshal(data, aux); err != nil {
 		return err
 	}
-	if len(aux.TID) == 0 {
-		return nil
-	}
-	var s string
-	if err := json.Unmarshal(aux.TID, &s); err == nil {
-		t.TID = s
-		return nil
-	}
-	var n json.Number
-	if err := json.Unmarshal(aux.TID, &n); err != nil {
+	tid, err := rawValueToString(aux.TID)
+	if err != nil {
 		return err
 	}
-	t.TID = n.String()
+	t.TID = tid
+	categoryID, err := rawValueToString(aux.CategoryID)
+	if err != nil {
+		return err
+	}
+	t.CategoryID = categoryID
 	return nil
+}
+
+// rawValueToString 把 JSON 原始值转成字符串，兼容数字与字符串两种形态
+func rawValueToString(raw json.RawMessage) (string, error) {
+	if len(raw) == 0 || string(raw) == "null" {
+		return "", nil
+	}
+	var s string
+	if err := json.Unmarshal(raw, &s); err == nil {
+		return s, nil
+	}
+	var n json.Number
+	if err := json.Unmarshal(raw, &n); err != nil {
+		return "", err
+	}
+	return n.String(), nil
 }
 
 // GetPubTemplateTitleList 获取所属类目下的公共模板
