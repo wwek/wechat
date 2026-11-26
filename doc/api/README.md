@@ -15,3 +15,7 @@
 - [微信支付](./wxpay.md)
 - [企业微信](./work.md)
 - [智能对话](./aispeech.md)
+
+小程序服务端 API 的官方接口覆盖情况见 [小程序服务端 API 覆盖清单](./miniprogram-server-api-gap.md)
+（机读版：[全量](./miniprogram-server-api-all.csv) / [缺口](./miniprogram-server-api-gap.csv)，
+可用 `doc/api/tools/sync_miniprogram_api.py` 重新抓取官方文档刷新）。
