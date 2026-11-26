@@ -31,3 +31,6 @@ example/*
 
 # git worktrees (isolated feature workspaces)
 .worktrees/
+
+# local scratch (文档抓取缓存等)
+.local/
