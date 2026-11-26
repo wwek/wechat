@@ -1,6 +1,7 @@
 package message
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/silenceper/wechat/v2/miniprogram/context"
@@ -94,6 +95,20 @@ type CreateActivityIDResponse struct {
 
 	ActivityID     string `json:"activity_id"`
 	ExpirationTime int64  `json:"expiration_time"`
+}
+
+// UnmarshalJSON 官方返回示例里 errcode 是字符串（如 "42001"），参数表却标注为 number，
+// 这里兼容两种形态，对外暴露的字段类型不变。
+func (r *CreateActivityIDResponse) UnmarshalJSON(data []byte) error {
+	type createActivityIDResponse CreateActivityIDResponse
+	aux := &struct {
+		ErrCode json.RawMessage `json:"errcode"`
+		*createActivityIDResponse
+	}{createActivityIDResponse: (*createActivityIDResponse)(r)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	return util.SetErrCode(aux.ErrCode, &r.ErrCode)
 }
 
 // UpdatableMsgTemplate 动态消息模板

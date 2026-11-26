@@ -1,6 +1,7 @@
 package ocr
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
 
@@ -85,6 +86,20 @@ type ResBankCard struct {
 	util.CommonError
 
 	Number string `json:"number,omitempty"`
+}
+
+// UnmarshalJSON 官方返回示例里 errcode 是字符串（如 "0"），参数表却标注为 number，
+// 这里兼容两种形态，对外暴露的字段类型不变。
+func (r *ResBankCard) UnmarshalJSON(data []byte) error {
+	type resBankCard ResBankCard
+	aux := &struct {
+		ErrCode json.RawMessage `json:"errcode"`
+		*resBankCard
+	}{resBankCard: (*resBankCard)(r)}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	return util.SetErrCode(aux.ErrCode, &r.ErrCode)
 }
 
 // ResDrivingLicense 驾驶证返回结果

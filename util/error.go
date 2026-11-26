@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"strconv"
+	"strings"
 )
 
 // CommonError 微信返回的通用错误 json
@@ -24,6 +26,34 @@ func NewCommonError(apiName string, code int64, msg string) *CommonError {
 		ErrCode: code,
 		ErrMsg:  msg,
 	}
+}
+
+// SetErrCode 解析 errcode 到目标字段，兼容数字与数字字符串两种形态。
+// 微信部分接口的官方返回示例里 errcode 是字符串，而参数表标注为 number，
+// 这里做统一处理，避免线上返回字符串时整个响应解码失败。
+func SetErrCode(raw json.RawMessage, dst *int64) error {
+	if len(raw) == 0 || string(raw) == "null" {
+		return nil
+	}
+	var code int64
+	if err := json.Unmarshal(raw, &code); err == nil {
+		*dst = code
+		return nil
+	}
+	var s string
+	if err := json.Unmarshal(raw, &s); err != nil {
+		return err
+	}
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return nil
+	}
+	code, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return err
+	}
+	*dst = code
+	return nil
 }
 
 // DecodeWithCommonError 将返回值按照 CommonError 解析
