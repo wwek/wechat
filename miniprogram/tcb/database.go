@@ -31,6 +31,8 @@ const (
 	databaseQueryURL = "https://api.weixin.qq.com/tcb/databasequery"
 	// 统计集合记录数或统计查询语句对应的结果记录数
 	databaseCountURL = "https://api.weixin.qq.com/tcb/databasecount"
+	// 数据库聚合
+	databaseAggregateURL = "https://api.weixin.qq.com/tcb/databaseaggregate"
 
 	// ConflictModeInster 冲突处理模式 插入
 	ConflictModeInster ConflictMode = 1
@@ -426,4 +428,31 @@ func (tcb *Tcb) DatabaseCount(env, query string) (*DatabaseCountRes, error) {
 	databaseCountRes := &DatabaseCountRes{}
 	err = util.DecodeWithError(response, databaseCountRes, "DatabaseCount")
 	return databaseCountRes, err
+}
+
+// DatabaseAggregateRes 数据库聚合 返回结果
+type DatabaseAggregateRes struct {
+	util.CommonError
+	Data []map[string]interface{} `json:"data"` // 记录数组
+}
+
+// AggregateDatabase 数据库聚合
+//
+// reference:https://developers.weixin.qq.com/miniprogram/dev/server/API/cloudbase/database/api_aggregatedatabase
+func (tcb *Tcb) AggregateDatabase(env, query string) (*DatabaseAggregateRes, error) {
+	accessToken, err := tcb.GetAccessToken()
+	if err != nil {
+		return nil, err
+	}
+	uri := fmt.Sprintf("%s?access_token=%s", databaseAggregateURL, accessToken)
+	response, err := util.PostJSON(uri, &DatabaseReq{
+		Env:   env,
+		Query: query,
+	})
+	if err != nil {
+		return nil, err
+	}
+	databaseAggregateRes := &DatabaseAggregateRes{}
+	err = util.DecodeWithError(response, databaseAggregateRes, "AggregateDatabase")
+	return databaseAggregateRes, err
 }

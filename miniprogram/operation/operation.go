@@ -26,6 +26,8 @@ const (
 	getJsErrListURL = "https://api.weixin.qq.com/wxaapi/log/jserr_list?access_token=%s"
 	// getGrayReleasePlanURL 获取分阶段发布详情
 	getGrayReleasePlanURL = "https://api.weixin.qq.com/wxa/getgrayreleaseplan?access_token=%s"
+	// getFeedbackMediaURL 获取mediaId图片
+	getFeedbackMediaURL = "https://api.weixin.qq.com/cgi-bin/media/getfeedbackmedia"
 )
 
 // Operation 运维中心
@@ -453,4 +455,32 @@ func (o *Operation) GetGrayReleasePlan() (res GetGrayReleasePlanResponse, err er
 	}
 	err = util.DecodeWithError(response, &res, "GetGrayReleasePlan")
 	return
+}
+
+// GetFeedbackMediaRequest 获取mediaId图片请求
+type GetFeedbackMediaRequest struct {
+	RecordID int64  `json:"record_id"` // 用户反馈信息的 record_id, 可通过 getFeedback 获取
+	MediaID  string `json:"media_id"`  // 图片的 mediaId
+}
+
+// GetFeedbackMedia 获取mediaId图片，成功时返回图片内容
+// see https://developers.weixin.qq.com/miniprogram/dev/server/API/operation/api_getfeedbackmedia
+func (o *Operation) GetFeedbackMedia(req *GetFeedbackMediaRequest) ([]byte, error) {
+	accessToken, err := o.GetAccessToken()
+	if err != nil {
+		return nil, err
+	}
+
+	params := map[string]interface{}{
+		"access_token": accessToken,
+		"record_id":    req.RecordID,
+		"media_id":     req.MediaID,
+	}
+	query := util.Query(params)
+
+	var response []byte
+	if response, err = util.HTTPGet(fmt.Sprintf("%s?%s", getFeedbackMediaURL, query)); err != nil {
+		return nil, err
+	}
+	return util.HandleFileResponse(response, "GetFeedbackMedia")
 }

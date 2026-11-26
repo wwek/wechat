@@ -97,4 +97,52 @@ const (
 
 	// getCdnLogs 查询 CDN 日志，该接口用于查询点播 CDN 的日志。
 	getCdnLogs = "https://api.weixin.qq.com/wxa/sec/vod/getcdnlogs?access_token="
+
+	// submitModifyDramaBasicInfo 修改剧目基本信息
+	submitModifyDramaBasicInfo = "https://api.weixin.qq.com/wxa/sec/vod/modifydramabasicinfo?access_token="
+
+	// submitReplaceMedias 提交替换剧集审核
+	submitReplaceMedias = "https://api.weixin.qq.com/wxa/sec/vod/submitreplacedramamedias?access_token="
+
+	// replaceDramaMedia 替换审核通过的剧集
+	replaceDramaMedia = "https://api.weixin.qq.com/wxa/sec/vod/replacedramamedia?access_token="
+
+	// getDramaLatestAuditInfo 查询剧目审核信息
+	getDramaLatestAuditInfo = "https://api.weixin.qq.com/wxa/sec/vod/getdramalatestauditinfo?access_token="
+
+	// authorizeApp 增加账号授权
+	authorizeApp = "https://api.weixin.qq.com/wxa/sec/vod/authorizeapp?access_token="
+
+	// getAuthorizedObjects 查询被授权信息，账号授权与剧目授权两个场景共用该接口
+	getAuthorizedObjects = "https://api.weixin.qq.com/wxa/sec/vod/getauthorizedobjects?access_token="
+
+	// getAuthorizeApps 查询账号授权信息
+	getAuthorizeApps = "https://api.weixin.qq.com/wxa/sec/vod/getauthorizeapps?access_token="
+
+	// deauthorizeApp 解除账号授权
+	deauthorizeApp = "https://api.weixin.qq.com/wxa/sec/vod/deauthorizeapp?access_token="
+
+	// authorizeCopyright 增加版权授权
+	authorizeCopyright = "https://api.weixin.qq.com/wxa/sec/vod/authorizecopyright?access_token="
+
+	// getCopyrightAuthorizationList 查询版权授权信息
+	getCopyrightAuthorizationList = "https://api.weixin.qq.com/wxa/sec/vod/getcopyrightauthorizationlist?access_token="
+
+	// getCopyrightAuthorizedList 查询被版权授权信息
+	getCopyrightAuthorizedList = "https://api.weixin.qq.com/wxa/sec/vod/getcopyrightauthorizedlist?access_token="
+
+	// deauthorizeCopyright 解除版权授权
+	deauthorizeCopyright = "https://api.weixin.qq.com/wxa/sec/vod/deauthorizecopyright?access_token="
+
+	// authorizeDrama 增加剧目授权
+	authorizeDrama = "https://api.weixin.qq.com/wxa/sec/vod/authorizedrama?access_token="
+
+	// getAuthorizeObjects 查询剧目授权信息
+	getAuthorizeObjects = "https://api.weixin.qq.com/wxa/sec/vod/getauthorizeobjects?access_token="
+
+	// deauthorizeDrama 解除剧目授权
+	deauthorizeDrama = "https://api.weixin.qq.com/wxa/sec/vod/deauthorizedrama?access_token="
+
+	// listPackages 查询流量包详情
+	listPackages = "https://api.weixin.qq.com/wxa/sec/vod/listpackages?access_token="
 )
