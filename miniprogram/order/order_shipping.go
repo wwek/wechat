@@ -278,7 +278,7 @@ type IsTradeManagementConfirmationCompletedRequest struct {
 // IsTradeManagementConfirmationCompletedResponse 查询小程序是否已完成交易结算管理确认返回参数
 type IsTradeManagementConfirmationCompletedResponse struct {
 	util.CommonError
-	Completed util.FlexBool `json:"completed"` // 是否已完成交易结算管理确认（官方返回示例中为字符串）
+	Completed bool `json:"completed"` // 是否已完成交易结算管理确认
 }
 
 // IsTradeManagedRequest 查询小程序是否已开通发货信息管理服务请求参数
@@ -289,7 +289,7 @@ type IsTradeManagedRequest struct {
 // IsTradeManagedResponse 查询小程序是否已开通发货信息管理服务返回参数
 type IsTradeManagedResponse struct {
 	util.CommonError
-	IsTradeManaged util.FlexBool `json:"is_trade_managed"` // 是否已开通发货信息管理服务（官方返回示例中为字符串）
+	IsTradeManaged bool `json:"is_trade_managed"` // 是否已开通发货信息管理服务
 }
 
 // SetMsgJumpPathRequest 消息跳转路径设置请求参数

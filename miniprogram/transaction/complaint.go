@@ -243,7 +243,7 @@ type ComplaintOrder struct {
 	OutTradeNo       string            `json:"outTradeNo"`       // 外部交易单号
 	ProductName      string            `json:"productName"`      // 商品名称
 	PayTime          int64             `json:"payTime"`          // 支付时间
-	TotalCost        util.FlexString   `json:"totalCost"`        // 订单总金额（官方参数表为 string、返回示例为数字）
+	TotalCost        int64             `json:"totalCost"`        // 订单总金额
 	ExpireTime       int64             `json:"expireTime"`       // 投诉过期时间
 	HeadImgURL       string            `json:"headImgUrl"`       // 投诉用户头像
 	NickName         string            `json:"nickName"`         // 投诉用户昵称

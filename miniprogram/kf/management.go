@@ -47,7 +47,7 @@ type RegisterBusinessRequest struct {
 // RegisterBusinessResponse 客服子商户创建商户响应
 type RegisterBusinessResponse struct {
 	util.CommonError
-	BusinessID util.FlexString `json:"business_id"` // 商户ID（官方参数表为 string、返回示例为数字）
+	BusinessID int64 `json:"business_id"` // 商户ID（官方请求与返回示例中均为数字）
 }
 
 // RegisterBusiness 客服子商户创建商户
@@ -69,7 +69,7 @@ func (kf *KF) RegisterBusiness(req *RegisterBusinessRequest) (res RegisterBusine
 
 // GetBusinessRequest 客服子商户拉取单个商户信息请求
 type GetBusinessRequest struct {
-	BusinessID  string `json:"business_id"`  // 创建商户时得到的商户id,与account_name选填一个
+	BusinessID  int64  `json:"business_id"`  // 创建商户时得到的商户id,与account_name选填一个（官方请求示例中为数字）
 	AccountName string `json:"account_name"` // 创建商户时用到的account_name,与business_id选填一个
 }
 
@@ -81,10 +81,10 @@ type GetBusinessResponse struct {
 
 // BusinessInfo 商户信息
 type BusinessInfo struct {
-	BusinessID  util.FlexString `json:"business_id"`   // 商户ID（官方参数表为 string、返回示例为数字）
-	AccountName string          `json:"account_name"`  // 商户账号名称
-	Nickname    string          `json:"nickname"`      // 商户昵称，会在客户端会话里展示
-	IconMediaID string          `json:"icon_media_id"` // 商户头像
+	BusinessID  int64  `json:"business_id"`   // 商户ID（官方请求与返回示例中均为数字）
+	AccountName string `json:"account_name"`  // 商户账号名称
+	Nickname    string `json:"nickname"`      // 商户昵称，会在客户端会话里展示
+	IconMediaID string `json:"icon_media_id"` // 商户头像
 }
 
 // GetBusiness 客服子商户拉取单个商户信息

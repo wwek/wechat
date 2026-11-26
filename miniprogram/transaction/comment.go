@@ -56,7 +56,7 @@ type AddCommentReplyRequest struct {
 // AddCommentReplyResponse 创建回复响应
 type AddCommentReplyResponse struct {
 	util.CommonError
-	Success util.FlexBool `json:"success"` // 请求是否成功状态（官方返回示例中可能是字符串）
+	Success bool `json:"success"` // 请求是否成功状态
 }
 
 // AddCommentReply 创建回复
@@ -87,7 +87,7 @@ type AddReplyRequest struct {
 // AddReplyResponse 创建评论响应
 type AddReplyResponse struct {
 	util.CommonError
-	Success util.FlexBool `json:"success"` // 请求是否成功状态（官方返回示例中可能是字符串）
+	Success bool `json:"success"` // 请求是否成功状态
 }
 
 // AddReply 创建评论
@@ -119,7 +119,7 @@ type DeleteCommentReplyRequest struct {
 // DeleteCommentReplyResponse 删除回复响应
 type DeleteCommentReplyResponse struct {
 	util.CommonError
-	Success util.FlexBool `json:"success"` // 请求是否成功状态（官方返回示例中可能是字符串）
+	Success bool `json:"success"` // 请求是否成功状态
 }
 
 // DeleteCommentReply 删除回复
@@ -150,7 +150,7 @@ type DeleteReplyRequest struct {
 // DeleteReplyResponse 删除评论响应
 type DeleteReplyResponse struct {
 	util.CommonError
-	Success util.FlexBool `json:"success"` // 请求是否成功状态（官方返回示例中可能是字符串）
+	Success bool `json:"success"` // 请求是否成功状态
 }
 
 // DeleteReply 删除评论
@@ -186,7 +186,7 @@ type GetCommentListResponse struct {
 	util.CommonError
 	Offset      int64         `json:"offset"`      // 查询的偏移数（从offset开始计数拉取)
 	Total       int64         `json:"total"`       // 评价总数
-	Success     util.FlexBool `json:"success"`     // 请求是否成功（官方返回示例中可能是字符串）
+	Success     bool          `json:"success"`     // 请求是否成功
 	CommentList []CommentItem `json:"commentList"` // 评价的列表
 }
 
@@ -303,7 +303,7 @@ type ConfirmCompromiseRequest struct {
 // ConfirmCompromiseResponse 确认和解响应
 type ConfirmCompromiseResponse struct {
 	util.CommonError
-	Success util.FlexBool `json:"success"` // 请求是否成功状态（官方返回示例中可能是字符串）
+	Success bool `json:"success"` // 请求是否成功状态
 }
 
 // ConfirmCompromise 确认和解
@@ -333,7 +333,7 @@ type ResetApiKfQuotaRequest struct {
 // ResetApiKfQuotaResponse 重置Api客服quota响应
 type ResetApiKfQuotaResponse struct {
 	util.CommonError
-	Success util.FlexBool `json:"success"` // 请求是否成功状态（官方返回示例中可能是字符串）
+	Success bool `json:"success"` // 请求是否成功状态
 }
 
 // ResetApiKfQuota 重置Api客服quota
@@ -358,7 +358,7 @@ func (s *Transaction) ResetApiKfQuota(in *ResetApiKfQuotaRequest) (out ResetApiK
 // CommentItem 评价信息
 type CommentItem struct {
 	CommentID   string             `json:"commentId"`   // 评价id
-	Amount      util.FlexInt64     `json:"amount"`      // 金额,单位是分（官方参数表为 string、返回示例为数字）
+	Amount      int64              `json:"amount"`      // 金额,单位是分
 	OrderID     string             `json:"orderId"`     // 订单id
 	CreateTime  string             `json:"createTime"`  // 创建时间，单位是秒
 	PayTime     string             `json:"payTime"`     // 支付时间，单位是秒
@@ -366,7 +366,7 @@ type CommentItem struct {
 	OrderInfo   CommentOrderInfo   `json:"orderInfo"`   // 商家订单信息
 	UserInfo    CommentUserInfo    `json:"userInfo"`    // 评价用户信息
 	BizInfo     CommentBizInfo     `json:"bizInfo"`     // 商家小程序信息
-	Score       util.FlexInt64     `json:"score"`       // 评价分数（每100分对应1星，官方参数表为 string、返回示例为数字）
+	Score       int64              `json:"score"`       // 评价分数（每100分对应1星）
 	Content     CommentContent     `json:"content"`     // 评价内容
 	ExtInfo     CommentExtInfo     `json:"extInfo"`     // 评价额外信息
 	ProductInfo CommentProductInfo `json:"productInfo"` // 评价商品信息
@@ -442,8 +442,8 @@ type CommentAction struct {
 // CommentOldComment 旧评价的信息(只有改评的新评价才有)
 type CommentOldComment struct {
 	CommentID  string            `json:"commentId"`  // 评价id
-	CreateTime util.FlexString   `json:"createTime"` // 创建时间，单位是秒（官方返回示例中为数字）
-	Score      util.FlexInt64    `json:"score"`      // 用户评价的打分，每100对应1分以及1颗星（官方参数表为 string、返回示例为数字）
+	CreateTime int64             `json:"createTime"` // 创建时间，单位是秒（官方返回示例中为数字）
+	Score      int64             `json:"score"`      // 用户评价的打分，每100对应1分以及1颗星
 	Content    CommentOldContent `json:"content"`    // 评论的内容
 }
 

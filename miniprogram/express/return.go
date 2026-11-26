@@ -120,11 +120,11 @@ type GetReturnIDRequest struct {
 // GetReturnIDResponse 查询退货ID状态返回参数
 type GetReturnIDResponse struct {
 	util.CommonError
-	Status       util.FlexInt64 `json:"status"`        // 退货方式，0.用户未填写退货信息 1.预约上门取件 2.填写自行寄回运单号（官方参数表为 number、返回示例为字符串）
-	WaybillID    string         `json:"waybill_id"`    // 运单号
-	OrderStatus  int            `json:"order_status"`  // 物流信息，0.已下单待揽件 1.已揽件 2.运输中 3.派件中 4.已签收 5.异常 6.代签收 7.揽收失败 8.签收失败（拒收，超区） 11.已取消 13.退件中 14.已退件 99.未知
-	DeliveryID   string         `json:"delivery_id"`   // 运力公司编码
-	DeliveryName string         `json:"delivery_name"` // 运力公司名称
+	Status       string `json:"status"`        // 退货方式，0.用户未填写退货信息 1.预约上门取件 2.填写自行寄回运单号（官方参数表为 number、返回示例为字符串）
+	WaybillID    string `json:"waybill_id"`    // 运单号
+	OrderStatus  int    `json:"order_status"`  // 物流信息，0.已下单待揽件 1.已揽件 2.运输中 3.派件中 4.已签收 5.异常 6.代签收 7.揽收失败 8.签收失败（拒收，超区） 11.已取消 13.退件中 14.已退件 99.未知
+	DeliveryID   string `json:"delivery_id"`   // 运力公司编码
+	DeliveryName string `json:"delivery_name"` // 运力公司名称
 }
 
 // UnbindReturnIDRequest 解绑退货ID请求参数

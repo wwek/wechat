@@ -332,15 +332,25 @@ type PubTemplateTitle struct {
 func (t *PubTemplateTitle) UnmarshalJSON(data []byte) error {
 	type alias PubTemplateTitle
 	aux := &struct {
-		TID *util.FlexString `json:"tid"`
+		TID json.RawMessage `json:"tid"`
 		*alias
 	}{alias: (*alias)(t)}
 	if err := json.Unmarshal(data, aux); err != nil {
 		return err
 	}
-	if aux.TID != nil {
-		t.TID = string(*aux.TID)
+	if len(aux.TID) == 0 {
+		return nil
 	}
+	var s string
+	if err := json.Unmarshal(aux.TID, &s); err == nil {
+		t.TID = s
+		return nil
+	}
+	var n json.Number
+	if err := json.Unmarshal(aux.TID, &n); err != nil {
+		return err
+	}
+	t.TID = n.String()
 	return nil
 }
 

@@ -51,7 +51,7 @@ type VerifySignatureRequest struct {
 // VerifySignatureResponse 生物认证秘钥签名验证响应
 type VerifySignatureResponse struct {
 	util.CommonError
-	IsOK util.FlexBool `json:"is_ok"` // 验证结果（官方返回示例中为字符串）
+	IsOK bool `json:"is_ok"` // 验证结果
 }
 
 // VerifySignature 生物认证秘钥签名验证

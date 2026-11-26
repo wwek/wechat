@@ -348,15 +348,15 @@ type InsuranceFreightGetPayOrderListResponse struct {
 
 // InsuranceFreightPayOrder 充值订单信息
 type InsuranceFreightPayOrder struct {
-	OrderID      int64         `json:"order_id"`      // 充值单号
-	OrderStatus  int           `json:"order_status"`  // 订单状态
-	TotalPrice   int64         `json:"total_price"`   // 充值金额
-	CreateTime   int64         `json:"create_time"`   // 订单创建时间
-	PayTime      int64         `json:"pay_time"`      // 支付时间
-	CanRefund    util.FlexBool `json:"can_refund"`    // 是否可以退款（官方参数表为 number、返回示例为布尔值）
-	RefundTime   int64         `json:"refund_time"`   // 退款时间
-	RefundStatus int           `json:"refund_status"` // 退款状态
-	RefundAmt    int64         `json:"refund_amt"`    // 退款金额
+	OrderID      int64 `json:"order_id"`      // 充值单号
+	OrderStatus  int   `json:"order_status"`  // 订单状态
+	TotalPrice   int64 `json:"total_price"`   // 充值金额
+	CreateTime   int64 `json:"create_time"`   // 订单创建时间
+	PayTime      int64 `json:"pay_time"`      // 支付时间
+	CanRefund    bool  `json:"can_refund"`    // 是否可以退款（官方参数表为 number、返回示例为布尔值）
+	RefundTime   int64 `json:"refund_time"`   // 退款时间
+	RefundStatus int   `json:"refund_status"` // 退款状态
+	RefundAmt    int64 `json:"refund_amt"`    // 退款金额
 }
 
 // InsuranceFreightGetSummaryRequest 拉取理赔摘要请求参数

@@ -159,7 +159,7 @@ type GetMsgRelationRequest struct {
 // GetMsgRelationResponse 查询用户是否开通响应
 type GetMsgRelationResponse struct {
 	util.CommonError
-	IsSubscribed util.FlexBool `json:"is_subscribed"` // 是否订阅（官方参数表为 boolean、返回示例为数字）
+	IsSubscribed int64 `json:"is_subscribed"` // 是否订阅（官方参数表为 boolean、返回示例为数字）
 }
 
 // UnmarshalJSON 该接口返回的错误码字段是 err_code/err_msg（与通用的 errcode/errmsg 不同），
